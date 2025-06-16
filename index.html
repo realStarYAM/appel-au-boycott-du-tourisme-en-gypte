@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiche - Appel au Boycott</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+Arabic:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Sans+Devanagari:wght@400;700;900&family=Noto+Sans+Greek:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .lang-ar {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            direction: rtl;
+        }
+        
+        .lang-zh {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        .lang-ja {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        
+        .lang-hi {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+        }
+        
+        .lang-el {
+            font-family: 'Noto Sans Greek', sans-serif;
+        }
+        
+        .lang-ko {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        
+        .pyramid-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pyramid-bg::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 200px solid rgba(15, 23, 42, 0.3);
+            z-index: 1;
+        }
+        
+        .pyramid-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 30%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 150px solid rgba(30, 41, 59, 0.4);
+            z-index: 1;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        @media (max-width: 768px) {
+            .text-6xl { font-size: 2.5rem; }
+            .text-4xl { font-size: 1.8rem; }
+            .text-xl { font-size: 1.1rem; }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .pyramid-bg {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            }
+        }
+    </style>
+</head>
+<body class="pyramid-bg min-h-screen">
+    <!-- Language Selector -->
+    <div class="fixed top-4 right-4 z-20">
+        <select id="languageSelector" class="bg-slate-800 text-white px-3 py-2 rounded-lg border border-slate-600 text-base">
+            <option value="fr">🇫🇷 Français</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="ar">🇸🇦 العربية</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="it">🇮🇹 Italiano</option>
+            <option value="tr">🇹🇷 Türkçe</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="zh">🇨🇳 中文</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="nl">🇳🇱 Nederlands</option>
+            <option value="el">🇬🇷 Ελληνικά</option>
+            <option value="hi">🇮🇳 हिन्दी</option>
+            <option value="pt">🇵🇹 Português</option>
+            <option value="pl">🇵🇱 Polski</option>
+            <option value="sv">🇸🇪 Svenska</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="id">🇮🇩 Bahasa Indonesia</option>
+            <option value="vi">🇻🇳 Tiếng Việt</option>
+        </select>
+    </div>
+
+    <div class="content min-h-screen flex flex-col justify-center items-center px-4 py-8" id="mainContent">
+        <!-- Content will be populated by JavaScript -->
+    </div>
+    
+    <script>
+        // Translations
+        const translations = {
+            fr: {
+                title1: "APPEL AU BOYCOTT",
+                title2: "DU TOURISME",
+                title2_highlight: "EN ÉGYPTE !",
+                paragraph1: "Aujourd'hui, le régime d'Al-Sissi a refusé d'ouvrir la frontière vers Gaza, bloquant ainsi l'aide humanitaire et les manifestants pacifiques venus soutenir le peuple palestinien.",
+                paragraph2: "Ce silence complice et cette inaction face à l'oppression sont inacceptables!",
+                paragraph3: "Pendant que des enfants meurent sous les bombes, le gouvernement égyptien choisit l'inaction.",
+                paragraph4: "Pire encore, certains profitent de la détresse palestinienne, vendant 1kg de farine à 50€ à des familles affamées.",
+                paragraph5: "L'Égypte tire des milliards du tourisme. Il est temps de frapper là où ça fait mal : leur économie.",
+                action1: "N'ALLONS PLUS EN ÉGYPTE.",
+                action2: "N'ENRICHISSONS PAS UN SYSTÈME QUI LAISSE MOURIR UN PEUPLE.",
+                action3: "MONTRONS QUE NOUS NE SOMMES PAS COMPLICES.",
+                action4: "LE TOURISME N'EST PAS PLUS IMPORTANT QUE LA VIE HUMAINE."
+            },
+            en: {
+                title1: "CALL FOR BOYCOTT",
+                title2: "OF TOURISM",
+                title2_highlight: "IN EGYPT !",
+                paragraph1: "Today, Al-Sisi's regime refused to open the border to Gaza, thus blocking humanitarian aid and peaceful protesters who came to support the Palestinian people.",
+                paragraph2: "This complicit silence and inaction in the face of oppression are unacceptable!",
+                paragraph3: "While children die under bombs, the Egyptian government chooses inaction.",
+                paragraph4: "Worse still, some profit from Palestinian distress, selling 1kg of flour for €50 to starving families.",
+                paragraph5: "Egypt makes billions from tourism. It's time to hit where it hurts: their economy.",
+                action1: "LET'S NOT GO TO EGYPT ANYMORE.",
+                action2: "LET'S NOT ENRICH A SYSTEM THAT LETS A PEOPLE DIE.",
+                action3: "LET'S SHOW WE ARE NOT COMPLICIT.",
+                action4: "TOURISM IS NOT MORE IMPORTANT THAN HUMAN LIFE."
+            },
+            ar: {
+                title1: "دعوة لمقاطعة",
+                title2: "السياحة",
+                title2_highlight: "في مصر !",
+                paragraph1: "اليوم، رفض نظام السيسي فتح الحدود مع غزة، وبالتالي منع المساعدات الإنسانية والمتظاهرين السلميين الذين جاءوا لدعم الشعب الفلسطيني.",
+                paragraph2: "هذا الصمت المتواطئ وعدم العمل في مواجهة القمع أمر غير مقبول!",
+                paragraph3: "بينما يموت الأطفال تحت القنابل، تختار الحكومة المصرية عدم العمل.",
+                paragraph4: "والأسوأ من ذلك، أن البعض يستفيد من المعاناة الفلسطينية، ويبيع كيلوغراماً من الدقيق بـ 50 يورو للعائلات الجائعة.",
+                paragraph5: "تحقق مصر مليارات من السياحة. حان الوقت لضربها حيث يؤلم: اقتصادها.",
+                action1: "لا نذهب إلى مصر بعد الآن.",
+                action2: "لا نثري نظاماً يترك شعباً يموت.",
+                action3: "دعونا نظهر أننا لسنا متواطئين.",
+                action4: "السياحة ليست أهم من الحياة البشرية."
+            },
+            es: {
+                title1: "LLAMADO AL BOICOT",
+                title2: "DEL TURISMO",
+                title2_highlight: "EN EGIPTO !",
+                paragraph1: "Hoy, el régimen de Al-Sisi se negó a abrir la frontera con Gaza, bloqueando así la ayuda humanitaria y los manifestantes pacíficos que vinieron a apoyar al pueblo palestino.",
+                paragraph2: "Este silencio cómplice y esta inacción ante la opresión son inaceptables!",
+                paragraph3: "Mientras los niños mueren bajo las bombas, el gobierno egipcio elige la inacción.",
+                paragraph4: "Peor aún, algunos se benefician de la angustia palestina, vendiendo 1kg de harina por €50 a familias hambrientas.",
+                paragraph5: "Egipto obtiene miles de millones del turismo. Es hora de golpear donde duele: su economía.",
+                action1: "NO VAYAMOS MÁS A EGIPTO.",
+                action2: "NO ENRIQUEZCAMOS UN SISTEMA QUE DEJA MORIR A UN PUEBLO.",
+                action3: "MOSTREMOS QUE NO SOMOS CÓMPLICES.",
+                action4: "EL TURISMO NO ES MÁS IMPORTANTE QUE LA VIDA HUMANA."
+            },
+            it: {
+                title1: "APPELLO AL BOICOTTAGGIO",
+                title2: "DEL TURISMO",
+                title2_highlight: "IN EGITTO !",
+                paragraph1: "Oggi, il regime di Al-Sisi ha rifiutato di aprire il confine con Gaza, bloccando così gli aiuti umanitari e i manifestanti pacifici venuti a sostenere il popolo palestinese.",
+                paragraph2: "Questo silenzio complice e questa inazione di fronte all'oppressione sono inaccettabili!",
+                paragraph3: "Mentre i bambini muoiono sotto le bombe, il governo egiziano sceglie l'inazione.",
+                paragraph4: "Peggio ancora, alcuni traggono profitto dal disagio palestinese, vendendo 1kg di farina a €50 alle famiglie affamate.",
+                paragraph5: "L'Egitto guadagna miliardi dal turismo. È ora di colpire dove fa male: la loro economia.",
+                action1: "NON ANDIAMO PIÙ IN EGITTO.",
+                action2: "NON ARRICCHIAMO UN SISTEMA CHE LASCIA MORIRE UN POPOLO.",
+                action3: "MOSTRIAMO CHE NON SIAMO COMPLICI.",
+                action4: "IL TURISMO NON È PIÙ IMPORTANTE DELLA VITA UMANA."
+            },
+            tr: {
+                title1: "BOYKOTa ÇAĞRI",
+                title2: "TURİZMİ",
+                title2_highlight: "MISIR'DA !",
+                paragraph1: "Bugün, Sisi rejimi Gazze sınırını açmayı reddetti, böylece insani yardımı ve Filistin halkını desteklemeye gelen barışçıl göstericileri engelledi.",
+                paragraph2: "Bu suç ortaklığı sessizliği ve baskı karşısındaki hareketsizlik kabul edilemez!",
+                paragraph3: "Çocuklar bombalar altında ölürken, Mısır hükümeti hareketsizliği seçiyor.",
+                paragraph4: "Daha da kötüsü, bazıları Filistin sıkıntısından kar ediyor, aç ailelere 1kg unu 50€'ya satıyor.",
+                paragraph5: "Mısır turizmden milyarlarca kazanıyor. Acıdığı yere vurmamın zamanı geldi: ekonomilerine.",
+                action1: "ARTIK MISIR'A GİTMEYELİM.",
+                action2: "BİR HALKI ÖLÜME TERK EDEN SİSTEMİ ZENGİNLEŞTİRMEYELİM.",
+                action3: "SUÇLU OLMADIĞIMIZI GÖSTERELİM.",
+                action4: "TURİZM İNSAN HAYATINDAN DAHA ÖNEMLİ DEĞİLDİR."
+            },
+            ru: {
+                title1: "ПРИЗЫВ К БОЙКОТУ",
+                title2: "ТУРИЗМА",
+                title2_highlight: "В ЕГИПТЕ !",
+                paragraph1: "Сегодня режим Ас-Сиси отказался открыть границу с Газой, тем самым заблокировав гуманитарную помощь и мирных демонстрантов, пришедших поддержать палестинский народ.",
+                paragraph2: "Это соучастие в молчании и бездействие перед лицом угнетения неприемлемы!",
+                paragraph3: "Пока дети умирают под бомбами, египетское правительство выбирает бездействие.",
+                paragraph4: "Хуже того, некоторые извлекают выгоду из палестинского бедствия, продавая 1кг муки за €50 голодающим семьям.",
+                paragraph5: "Египет зарабатывает миллиарды на туризме. Пришло время ударить по больному месту: их экономике.",
+                action1: "БОЛЬШЕ НЕ ПОЕДЕМ В ЕГИПЕТ.",
+                action2: "НЕ БУДЕМ ОБОГАЩАТЬ СИСТЕМУ, КОТОРАЯ ПОЗВОЛЯЕТ НАРОДУ УМИРАТЬ.",
+                action3: "ПОКАЖЕМ, ЧТО МЫ НЕ СОУЧАСТНИКИ.",
+                action4: "ТУРИЗМ НЕ ВАЖНЕЕ ЧЕЛОВЕЧЕСКОЙ ЖИЗНИ."
+            },
+            zh: {
+                title1: "呼吁抵制",
+                title2: "旅游业",
+                title2_highlight: "在埃及 !",
+                paragraph1: "今天，塞西政权拒绝开放与加沙的边界，从而阻止了人道主义援助和前来支持巴勒斯坦人民的和平抗议者。",
+                paragraph2: "这种同谋的沉默和面对压迫的不作为是不可接受的！",
+                paragraph3: "当儿童在炸弹下死亡时，埃及政府选择了不作为。",
+                paragraph4: "更糟糕的是，一些人从巴勒斯坦的痛苦中获利，向饥饿的家庭以50欧元的价格出售1公斤面粉。",
+                paragraph5: "埃及从旅游业中赚取数十亿美元。是时候打击他们的痛处了：他们的经济。",
+                action1: "我们不再去埃及。",
+                action2: "我们不会充实一个让人民死亡的制度。",
+                action3: "让我们表明我们不是同谋。",
+                action4: "旅游业不比人类生命更重要。"
+            },
+            ja: {
+                title1: "ボイコットの呼びかけ",
+                title2: "観光業の",
+                title2_highlight: "エジプトで !",
+                paragraph1: "今日、シシ政権はガザとの国境開放を拒否し、パレスチナ人民を支援しに来た人道支援と平和的抗議者を阻止しました。",
+                paragraph2: "この共犯の沈黙と弾圧に対する無行動は受け入れられません！",
+                paragraph3: "子どもたちが爆弾の下で死んでいる間、エジプト政府は無行動を選んでいます。",
+                paragraph4: "さらに悪いことに、一部の人々はパレスチナの苦痛から利益を得て、飢えた家族に1kgの小麦粉を50ユーロで売っています。",
+                paragraph5: "エジプトは観光業から数十億を稼いでいます。痛いところを打つ時です：彼らの経済を。",
+                action1: "もうエジプトには行きません。",
+                action2: "人民を死に至らしめるシステムを豊かにしません。",
+                action3: "私たちが共犯者ではないことを示しましょう。",
+                action4: "観光業は人間の命より重要ではありません。"
+            },
+            de: {
+                title1: "AUFRUF ZUM BOYKOTT",
+                title2: "DES TOURISMUS",
+                title2_highlight: "IN ÄGYPTEN !",
+                paragraph1: "Heute hat Al-Sisis Regime sich geweigert, die Grenze nach Gaza zu öffnen und blockiert damit humanitäre Hilfe und friedliche Demonstranten, die das palästinensische Volk unterstützen wollten.",
+                paragraph2: "Dieses mitschuldige Schweigen und diese Untätigkeit angesichts der Unterdrückung sind inakzeptabel!",
+                paragraph3: "Während Kinder unter Bomben sterben, wählt die ägyptische Regierung die Untätigkeit.",
+                paragraph4: "Schlimmer noch, einige profitieren von der palästinensischen Not und verkaufen 1kg Mehl für 50€ an hungernde Familien.",
+                paragraph5: "Ägypten verdient Milliarden mit dem Tourismus. Es ist Zeit, dort zu treffen, wo es weh tut: ihre Wirtschaft.",
+                action1: "GEHEN WIR NICHT MEHR NACH ÄGYPTEN.",
+                action2: "BEREICHERN WIR KEIN SYSTEM, DAS EIN VOLK STERBEN LÄSST.",
+                action3: "ZEIGEN WIR, DASS WIR NICHT MITSCHULDIG SIND.",
+                action4: "TOURISMUS IST NICHT WICHTIGER ALS MENSCHLICHES LEBEN."
+            },
+            nl: {
+                title1: "OPROEP TOT BOYCOT",
+                title2: "VAN TOERISME",
+                title2_highlight: "IN EGYPTE !",
+                paragraph1: "Vandaag weigerde Al-Sisi's regime de grens naar Gaza te openen, waardoor humanitaire hulp en vreedzame demonstranten die het Palestijnse volk wilden steunen werden geblokkeerd.",
+                paragraph2: "Deze medeplichtige stilte en passiviteit in het aangezicht van onderdrukking zijn onaanvaardbaar!",
+                paragraph3: "Terwijl kinderen sterven onder bommen, kiest de Egyptische regering voor passiviteit.",
+                paragraph4: "Erger nog, sommigen profiteren van Palestijnse ellende en verkopen 1kg meel voor €50 aan uitgehongerde families.",
+                paragraph5: "Egypte verdient miljarden aan toerisme. Het is tijd om te raken waar het pijn doet: hun economie.",
+                action1: "LATEN WE NIET MEER NAAR EGYPTE GAAN.",
+                action2: "LATEN WE GEEN SYSTEEM VERRIJKEN DAT EEN VOLK LAAT STERVEN.",
+                action3: "LATEN WE TONEN DAT WE NIET MEDEPLICHTIG ZIJN.",
+                action4: "TOERISME IS NIET BELANGRIJKER DAN MENSELIJK LEVEN."
+            },
+            el: {
+                title1: "ΚΛΗΣΗ ΓΙΑ ΜΠΟΪΚΟΤΑΖ",
+                title2: "ΤΟΥ ΤΟΥΡΙΣΜΟΥ",
+                title2_highlight: "ΣΤΗΝ ΑΙΓΥΠΤΟ !",
+                paragraph1: "Σήμερα, το καθεστώς του Αλ-Σίσι αρνήθηκε να ανοίξει τα σύνορα με τη Γάζα, εμποδίζοντας έτσι την ανθρωπιστική βοήθεια και τους ειρηνικούς διαδηλωτές που ήρθαν να υποστηρίξουν τον παλαιστινιακό λαό.",
+                paragraph2: "Αυτή η συνενόχη σιωπή και αδράνεια απέναντι στην καταπίεση είναι απαράδεκτη!",
+                paragraph3: "Ενώ παιδιά πεθαίνουν κάτω από βόμβες, η αιγυπτιακή κυβέρνηση επιλέγει την αδράνεια.",
+                paragraph4: "Χειρότερα ακόμα, κάποιοι επωφελούνται από την παλαιστινιακή θλίψη, πουλώντας 1κ αλεύρι για €50 σε πεινασμένες οικογένειες.",
+                paragraph5: "Η Αίγυπτος βγάζει δισεκατομμύρια από τον τουρισμό. Ήρθε η ώρα να χτυπήσουμε εκεί που πονάει: την οικονομία τους.",
+                action1: "ΝΑ ΜΗΝ ΠΑΜΕ ΠΙΑ ΣΤΗΝ ΑΙΓΥΠΤΟ.",
+                action2: "ΝΑ ΜΗΝ ΠΛΟΥΤΙΖΟΥΜΕ ΕΝΑ ΣΥΣΤΗΜΑ ΠΟΥ ΑΦΗΝΕΙ ΕΝΑ ΛΑΟ ΝΑ ΠΕΘΑΝΕΙ.",
+                action3: "ΝΑ ΔΕΙΞΟΥΜΕ ΟΤΙ ΔΕΝ ΕΙΜΑΣΤΕ ΣΥΝΕΝΟΧΟΙ.",
+                action4: "Ο ΤΟΥΡΙΣΜΟΣ ΔΕΝ ΕΙΝΑΙ ΠΙΟΠΣΗΜΑΝΤΙΚΟΣ ΑΠΟ ΤΗ ΖΩΦΗ."
+            },
+            hi: {
+                title1: "बहिष्कार का आह्वान",
+                title2: "पर्यटन का",
+                title2_highlight: "मिस्र में !",
+                paragraph1: "आज, अल-सिसी शासन ने गाजा की सीमा खोलने से इनकार कर दिया, इस प्रकार मानवीय सहायता और शांतिपूर्ण प्रदर्शनकारियों को रोक दिया जो फिलिस्तीनी लोगों का समर्थन करने आए थे।",
+                paragraph2: "यह सहयोगी मौनता और उत्पीड़न के सामने निष्क्रियता अस्वीकार्य है!",
+                paragraph3: "जबकि बच्चे बमों के नीचे मर रहे हैं, मिस्री सरकार निष्क्रियता चुनती है।",
+                paragraph4: "बदतर अभी भी, कुछ फिलिस्तीनी संकट से लाभ उठाते हैं, भूखे परिवारों को 1 किलो आटा €50 में बेचते हैं।",
+                paragraph5: "मिस्र पर्यटन से अरबों कमाता है। अब समय है वहाँ मारने का जहाँ दर्द होता है: उनकी अर्थव्यवस्था।",
+                action1: "अब मिस्र न जाएं।",
+                action2: "एक ऐसी व्यवस्था को समृद्ध न बनाएं जो लोगों को मरने देती है।",
+                action3: "दिखाएं कि हम सहयोगी नहीं हैं।",
+                action4: "पर्यटन मानव जीवन से अधिक महत्वपूर्ण नहीं है।"
+            },
+            pt: {
+                title1: "APELO AO BOICOTE",
+                title2: "DO TURISMO",
+                title2_highlight: "NO EGITO !",
+                paragraph1: "Hoje, o regime de Al-Sisi recusou-se a abrir a fronteira com Gaza, bloqueando assim a ajuda humanitária e os manifestantes pacíficos que vieram apoiar o povo palestino.",
+                paragraph2: "Este silêncio cúmplice e esta inação face à opressão são inaceitáveis!",
+                paragraph3: "Enquanto crianças morrem sob bombas, o governo egípcio escolhe a inação.",
+                paragraph4: "Pior ainda, alguns lucram com a angústia palestina, vendendo 1kg de farinha por €50 a famílias famintas.",
+                paragraph5: "O Egito fatura bilhões com o turismo. É hora de atingir onde dói: sua economia.",
+                action1: "NÃO VAMOS MAIS AO EGITO.",
+                action2: "NÃO ENRIQUEÇAMOS UM SISTEMA QUE DEIXA UM POVO MORRER.",
+                action3: "MOSTREMOS QUE NÃO SOMOS CÚMPLICES.",
+                action4: "O TURISMO NÃO É MAIS IMPORTANTE QUE A VIDA HUMANA."
+            },
+            pl: {
+                title1: "WEZWANIE DO BOJKOTU",
+                title2: "TURYSTYKI",
+                title2_highlight: "W EGIPCIE !",
+                paragraph1: "Dziś reżim Al-Sisiego odmówił otwarcia granicy z Gazą, blokując tym samym pomoc humanitarną i pokojowych demonstrantów, którzy przyszli wspierać naród palestyński.",
+                paragraph2: "To współwinna cisza i bezczynność wobec opresji są nie do przyjęcia!",
+                paragraph3: "Podczas gdy dzieci umierają pod bombami, egipski rząd wybiera bezczynność.",
+                paragraph4: "Co gorsza, niektórzy profitują z palestyńskiej udręki, sprzedając 1kg mąki za €50 głodującym rodzinom.",
+                paragraph5: "Egipt zarabia miliardy na turystyce. Czas uderzyć tam, gdzie boli: w ich gospodarkę.",
+                action1: "NIE JEŹDŹMY JUŻ DO EGIPTU.",
+                action2: "NIE WZBOGACAJMY SYSTEMU, KTÓRY POZWALA LUDOWI UMRZEĆ.",
+                action3: "POKAŻMY, ŻE NIE JESTEŚMY WSPÓLNIKAMI.",
+                action4: "TURYSTYKA NIE JEST WAŻNIEJSZA OD LUDZKIEGO ŻYCIA."
+            },
+            sv: {
+                title1: "UPPROP TILL BOJKOTT",
+                title2: "AV TURISM",
+                title2_highlight: "I EGYPTEN !",
+                paragraph1: "Idag vägrade Al-Sisis regim att öppna gränsen till Gaza och blockerade därmed humanitär hjälp och fredliga demonstranter som kom för att stödja det palestinska folket.",
+                paragraph2: "Denna medskuldiga tystnad och passivitet inför förtryck är oacceptabelt!",
+                paragraph3: "Medan barn dör under bomber väljer den egyptiska regeringen passivitet.",
+                paragraph4: "Värre än så, vissa tjänar på palestinsk nöd och säljer 1kg mjöl för €50 till svältande familjer.",
+                paragraph5: "Egypten tjänar miljarder på turism. Det är dags att slå där det gör ont: deras ekonomi.",
+                action1: "VI ÅKE INTE LÄNGRE TILL EGYPTEN.",
+                action2: "VI BERIKE INTE ETT SYSTEM SOM LÅTER ETT FOLK DÖ.",
+                action3: "VI VISA ATT VI INTE ÄR MEDSKYLDIGA.",
+                action4: "TURISM ÄR INTE VIKTIGARE ÄN MÄNSKLIGT LIV."
+            },
+            ko: {
+                title1: "보이콧 호출",
+                title2: "관광업의",
+                title2_highlight: "이집트에서 !",
+                paragraph1: "오늘, 알시시 정권은 가자 국경 개방을 거부하여 팔레스타인 민족을 지원하러 온 인도주의적 지원과 평화적 시위자들을 차단했습니다.",
+                paragraph2: "이러한 공모적 침묵과 억압에 대한 무행동은 용납할 수 없습니다!",
+                paragraph3: "아이들이 폭탄 아래서 죽어가는 동안, 이집트 정부는 무행동을 선택합니다.",
+                paragraph4: "더 나쁜 것은, 일부는 팔레스타인의 고통으로부터 이익을 얻으며 굶주린 가족들에게 밀가루 1kg을 50유로에 팔고 있습니다.",
+                paragraph5: "이집트는 관광업에서 수십억을 벌어들입니다. 아픈 곳을 칠 시간입니다: 그들의 경제를.",
+                action1: "더 이상 이집트에 가지 맙시다.",
+                action2: "민족을 죽게 내버려 두는 시스템을 부유하게 만들지 맙시다.",
+                action3: "우리가 공범이 아님을 보여줍시다.",
+                action4: "관광업은 인간의 생명보다 중요하지 않습니다."
+            },
+            id: {
+                title1: "SERUAN BOIKOT",
+                title2: "PARIWISATA",
+                title2_highlight: "DI MESIR !",
+                paragraph1: "Hari ini, rezim Al-Sisi menolak membuka perbatasan ke Gaza, dengan demikian memblokir bantuan kemanusiaan dan demonstran damai yang datang mendukung rakyat Palestina.",
+                paragraph2: "Kebisuan yang terlibat ini dan ketidakaktifan menghadapi penindasan tidak dapat diterima!",
+                paragraph3: "Sementara anak-anak mati di bawah bom, pemerintah Mesir memilih ketidakaktifan.",
+                paragraph4: "Lebih buruk lagi, beberapa orang mengambil keuntungan dari penderitaan Palestina, menjual 1kg tepung seharga €50 kepada keluarga yang kelaparan.",
+                paragraph5: "Mesir meraup miliaran dari pariwisata. Saatnya menyerang di mana itu menyakitkan: ekonomi mereka.",
+                action1: "JANGAN PERGI KE MESIR LAGI.",
+                action2: "JANGAN MEMPERKAYA SISTEM YANG MEMBIARKAN RAKYAT MATI.",
+                action3: "TUNJUKKAN BAHWA KITA TIDAK TERLIBAT.",
+                action4: "PARIWISATA TIDAK LEBIH PENTING DARI KEHIDUPAN MANUSIA."
+            },
+            vi: {
+                title1: "KÊU GỌI TẨY CHAY",
+                title2: "DU LỊCH",
+                title2_highlight: "Ở AI CẬP !",
+                paragraph1: "Hôm nay, chế độ Al-Sisi đã từ chối mở biên giới với Gaza, do đó chặn viện trợ nhân đạo và các cuộc biểu tình hòa bình đến ủng hộ người dân Palestine.",
+                paragraph2: "Sự im lặng đồng lõa này và sự không hành động trước sự áp bức là không thể chấp nhận được!",
+                paragraph3: "Trong khi trẻ em chết dưới những quả bom, chính phủ Ai Cập chọn không hành động.",
+                paragraph4: "Tệ hơn nữa, một số người kiếm lợi từ nỗi đau của Palestine, bán 1kg bột mì với giá €50 cho các gia đình đói khát.",
+                paragraph5: "Ai Cập kiếm hàng tỷ từ du lịch. Đã đến lúc tấn công nơi đau đớn: nền kinh tế của họ.",
+                action1: "ĐỪNG ĐI AI CẬP NỮA.",
+                action2: "ĐỪNG LÀM GIÀU CHO HỆ THỐNG ĐỂ MỘT DÂN TỘC CHẾT.",
+                action3: "CHÚNG TA HÃYHIBHWN RA RẰNG CHÚNG TA KHÔNG ĐỒNG LÕA.",
+                action4: "DU LỊCH KHÔNG QUAN TRỌNG HƠN CUỘC SỐNG CON NGƯỜI."
+            }
+        };
+
+        function updateContent(lang) {
+            const content = translations[lang];
+            const mainContent = document.getElementById('mainContent');
+            
+            // Apply language-specific classes
+            document.body.className = document.body.className.replace(/lang-\w+/g, '');
+            if (lang === 'ar') {
+                document.body.classList.add('lang-ar');
+            } else if (lang === 'zh') {
+                document.body.classList.add('lang-zh');
+            } else if (lang === 'ja') {
+                document.body.classList.add('lang-ja');
+            } else if (lang === 'hi') {
+                document.body.classList.add('lang-hi');
+            } else if (lang === 'el') {
+                document.body.classList.add('lang-el');
+            } else if (lang === 'ko') {
+                document.body.classList.add('lang-ko');
+            }
+            
+            mainContent.innerHTML = `
+                <!-- Main Title -->
+                <div class="text-center mb-8">
+                    <h1 class="text-red-500 font-black text-4xl md:text-6xl tracking-wider text-shadow mb-2">
+                        ${content.title1}
+                    </h1>
+                    <h2 class="text-white font-black text-2xl md:text-4xl tracking-wide text-shadow">
+                        ${content.title2} <span class="text-green-400">${content.title2_highlight}</span>
+                    </h2>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="max-w-4xl text-center space-y-6 mb-8">
+                    <p class="text-white text-lg md:text-xl leading-relaxed text-shadow">
+                        ${content.paragraph1}
+                    </p>
+                    
+                    <p class="text-white text-lg md:text-xl leading-relaxed text-shadow">
+                        ${content.paragraph2}
+                    </p>
+                    
+                    <p class="text-white text-lg md:text-xl leading-relaxed text-shadow">
+                        ${content.paragraph3}
+                    </p>
+                    
+                    <p class="text-white text-lg md:text-xl leading-relaxed text-shadow">
+                        ${content.paragraph4}
+                    </p>
+                    
+                    <p class="text-white text-lg md:text-xl leading-relaxed text-shadow">
+                        ${content.paragraph5}
+                    </p>
+                </div>
+                
+                <!-- Call to Action -->
+                <div class="text-center space-y-4 max-w-4xl">
+                    <p class="text-red-500 font-black text-xl md:text-2xl tracking-wide text-shadow">
+                        ${content.action1}
+                    </p>
+                    <p class="text-white font-black text-xl md:text-2xl tracking-wide text-shadow">
+                        ${content.action2}
+                    </p>
+                    <p class="text-white font-black text-xl md:text-2xl tracking-wide text-shadow">
+                        ${content.action3}
+                    </p>
+                    <p class="text-green-400 font-black text-xl md:text-2xl tracking-wide text-shadow">
+                        ${content.action4}
+                    </p>
+                </div>
+            `;
+        }
+
+        // Language selector event listener
+        document.getElementById('languageSelector').addEventListener('change', (e) => {
+            updateContent(e.target.value);
+        });
+
+        // Initialize with French
+        updateContent('fr');
+
+        // Dark mode support
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+</body>
+</html>
